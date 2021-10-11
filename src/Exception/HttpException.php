@@ -4,9 +4,12 @@ namespace Gp3991\HereDistanceCalculator\Exception;
 
 abstract class HttpException extends \Exception implements HttpExceptionInterface
 {
+    const MESSAGE = '';
+    const CODE = 0;
+    
     public function __construct(
-        string $message,
-        int $code,
+        string $message = self::MESSAGE,
+        int $code = self::CODE,
         private array $data = []
     ) {
         parent::__construct($message, $code);
