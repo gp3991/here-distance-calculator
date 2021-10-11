@@ -6,7 +6,7 @@ RUN a2enmod rewrite
 # Install php extensions
 RUN apt-get update \
     && apt-get -y --no-install-recommends install \
-    iproute2 \
+    iproute2 unzip \
     && pecl install xdebug-3.0.4 \
     && docker-php-ext-enable xdebug
 

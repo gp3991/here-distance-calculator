@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker exec here-distance-calculator sh -c "./tools/php-cs-fixer/vendor/bin/php-cs-fixer $*"
