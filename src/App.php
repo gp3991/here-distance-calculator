@@ -25,12 +25,12 @@ class App
     {
         ApiRouter::get(
             '/',
-            fn (JsonRequestInterface $request) => (new HomeController())->index($request)
+            fn (JsonRequestInterface $request) => (new HomeController())->index()
         );
 
         ApiRouter::get(
             '/404',
-            fn (JsonRequestInterface $request) => (new NotFoundController())->index($request)
+            fn (JsonRequestInterface $request) => (new NotFoundController())->index()
         );
     }
 }

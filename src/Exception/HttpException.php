@@ -2,8 +2,6 @@
 
 namespace Gp3991\HereDistanceCalculator\Exception;
 
-use Throwable;
-
 abstract class HttpException extends \Exception implements HttpExceptionInterface
 {
     public function __construct(

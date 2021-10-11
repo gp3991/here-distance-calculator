@@ -8,7 +8,7 @@ class JsonRequest extends Request implements JsonRequestInterface
     {
         try {
             return json_decode($this->getBody(), true, flags: JSON_THROW_ON_ERROR);
-        } catch (\JsonException $e) {
+        } catch (\JsonException) {
             return [];
         }
     }
