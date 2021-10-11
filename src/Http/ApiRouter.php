@@ -2,6 +2,8 @@
 
 namespace Gp3991\HereDistanceCalculator\Http;
 
+use Gp3991\HereDistanceCalculator\Exception\HttpExceptionInterface;
+
 class ApiRouter implements RouterInterface
 {
     public static function get(string $route, callable $callback)
@@ -22,17 +24,45 @@ class ApiRouter implements RouterInterface
         self::request($route, $callback);
     }
 
-    /**
-     * @throws \Exception
-     */
     private static function request(string $route, callable $callback)
     {
         if (strtok($_SERVER['REQUEST_URI'], '?') === $route) {
-            $callbackResult = $callback(new JsonRequest());
-
-            if (!$callbackResult instanceof ResponseInterface) {
+            
+            try {
+                $response = $callback(new JsonRequest());
+            } catch (HttpExceptionInterface $e) {
+                self::sendResponse(
+                    $e->getStatusCode(),
+                    [ResponseInterface::JSON_RESPONSE_HEADER],
+                    $e->getContent()
+                );
+            }
+            
+            if (!$response instanceof ResponseInterface) {
                 throw new \Exception('Controller result must implement ResponseInterface.');
             }
+
+            self::sendResponse(
+                $response->getStatusCode(),
+                $response->getHeaders(),
+                $response->getContent()
+            );
         }
+    }
+    
+    private static function sendResponse(int $statusCode, array $headers, string $content)
+    {
+        // Send response code
+        http_response_code($statusCode);
+        
+        // Send headers
+        foreach ($headers as $header) {
+            header($header);
+        }
+        
+        // Send content
+        echo $content;
+        
+        exit;
     }
 }
