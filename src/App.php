@@ -3,6 +3,7 @@
 namespace Gp3991\HereDistanceCalculator;
 
 use Gp3991\HereDistanceCalculator\Config\SQLiteConfig;
+use Gp3991\HereDistanceCalculator\Controller\AddressController;
 use Gp3991\HereDistanceCalculator\Controller\HomeController;
 use Gp3991\HereDistanceCalculator\Controller\NotFoundController;
 use Gp3991\HereDistanceCalculator\Http\ApiRouter;
@@ -30,6 +31,8 @@ class App
 
     private function registerRoutes()
     {
+        // Other/dummy endpoints
+        
         ApiRouter::get(
             '/',
             fn (JsonRequestInterface $request) => (new HomeController())->index()
@@ -38,6 +41,18 @@ class App
         ApiRouter::get(
             '/404',
             fn (JsonRequestInterface $request) => (new NotFoundController())->index()
+        );
+
+        // Address related endpoints
+        
+        ApiRouter::get(
+            '/address/list',
+            fn (JsonRequestInterface $request) => (new AddressController())->getCollectionAction()
+        );
+
+        ApiRouter::get(
+            '/address/item',
+            fn (JsonRequestInterface $request) => (new AddressController())->getItemAction($request)
         );
     }
 }
