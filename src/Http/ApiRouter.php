@@ -36,6 +36,8 @@ class ApiRouter implements RouterInterface
                     [ResponseInterface::JSON_RESPONSE_HEADER],
                     $e->getContent()
                 );
+                
+                return;
             }
             
             if (!$response instanceof ResponseInterface) {
