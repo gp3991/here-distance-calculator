@@ -1,0 +1,17 @@
+{
+    "name": "gp3991/here-distance-calculator",
+    "type": "project",
+    "license": "GNU General Public License v3.0",
+    "autoload": {
+        "psr-4": {
+            "Gp3991\\HereDistanceCalculator\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Piotr Gościniak",
+            "email": "gp3991@gmail.com"
+        }
+    ],
+    "require": {}
+}
