@@ -9,6 +9,6 @@ class HomeController extends AbstractController
 {
     public function index(): ResponseInterface
     {
-        return new JsonResponse(['test' => true]);
+        return new JsonResponse(['message' => 'Hi, welcome to the app. Check the API documentation for more information.']);
     }
 }
