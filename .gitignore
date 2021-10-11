@@ -3,6 +3,7 @@
 ###< ide realted ###
 
 ###> project ###
+/var/db.sqlite
 /vendor/
 .php-cs-fixer.cache
 ###< project ###
