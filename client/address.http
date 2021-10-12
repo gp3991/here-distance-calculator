@@ -1,0 +1,8 @@
+GET {{host}}/address/list
+Accept: application/json
+
+###
+GET {{host}}/address/item?id=1
+Accept: application/json
+
+###

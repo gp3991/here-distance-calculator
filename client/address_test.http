@@ -1,0 +1,15 @@
+GET {{host}}/address/list
+Accept: application/json
+
+> {%
+if(response.body[0]) {
+client.global.set("address_id", response.body[0]['id']);
+}
+%}
+
+
+###
+GET {{host}}/address/item?id={{address_id}}
+Accept: application/json
+
+###
