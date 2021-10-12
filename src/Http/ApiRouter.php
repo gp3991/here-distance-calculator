@@ -2,69 +2,39 @@
 
 namespace Gp3991\HereDistanceCalculator\Http;
 
+use Assert\AssertionFailedException;
+use Gp3991\HereDistanceCalculator\Exception\BadRequestHttpException;
 use Gp3991\HereDistanceCalculator\Exception\HttpExceptionInterface;
 
-class ApiRouter implements RouterInterface
+class ApiRouter extends AbstractRouter
 {
-    public function get(string $route, callable $callback)
-    {
-        if ('GET' !== $_SERVER['REQUEST_METHOD']) {
-            return;
-        }
-
-        $this->request($route, $callback);
-    }
-
-    public function post(string $route, callable $callback)
-    {
-        if ('POST' !== $_SERVER['REQUEST_METHOD']) {
-            return;
-        }
-
-        $this->request($route, $callback);
-    }
-
-    private function request(string $route, callable $callback)
+    protected function request(string $route, callable $callback)
     {
         if (strtok($_SERVER['REQUEST_URI'], '?') === $route) {
-            
             try {
-                $response = $callback(new JsonRequest());
+                parent::request($route, $callback);
+            } catch (AssertionFailedException $e) {
+                $httpException = new BadRequestHttpException($e->getMessage());
+                $this->returnHttpException($httpException);
             } catch (HttpExceptionInterface $e) {
-                self::sendResponse(
-                    $e->getStatusCode(),
-                    [ResponseInterface::JSON_RESPONSE_HEADER],
-                    $e->getContent()
-                );
-                
+                $this->returnHttpException($e);
+
                 return;
             }
-            
-            if (!$response instanceof ResponseInterface) {
-                throw new \Exception('Controller result must implement ResponseInterface.');
-            }
-
-            $this->sendResponse(
-                $response->getStatusCode(),
-                $response->getHeaders(),
-                $response->getContent()
-            );
         }
     }
-    
-    private function sendResponse(int $statusCode, array $headers, string $content)
+
+    private function returnHttpException(HttpExceptionInterface $exception)
     {
-        // Send response code
-        http_response_code($statusCode);
-        
-        // Send headers
-        foreach ($headers as $header) {
-            header($header);
-        }
-        
-        // Send content
-        echo $content;
-        
-        exit;
+        $this->sendResponse(
+            $exception->getStatusCode(),
+            [ResponseInterface::JSON_RESPONSE_HEADER],
+            $exception->getContent()
+        );
+    }
+
+    public function getRequest(): RequestInterface
+    {
+        return new JsonRequest();
     }
 }
