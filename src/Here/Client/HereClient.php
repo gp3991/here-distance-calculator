@@ -7,11 +7,12 @@ use Gp3991\HereDistanceCalculator\Exception\HereRequestException;
 class HereClient extends AbstractApiClient
 {
     public const ROUTES_ENDPOINT_URL = 'https://router.hereapi.com/v8/routes';
-    public const GEOCODE_ENDPOINT_URL = 'https://geocoder.ls.hereapi.com/search/6.2/geocode.json';
+    public const GEOCODE_ENDPOINT_URL = 'https://autosuggest.search.hereapi.com/v1/geocode';
 
     public function request(string $url, array $query = []): ?ClientResponse
     {
         $query['apiKey'] = $_ENV['HERE_API_KEY'];
+
         return parent::request($url, $query);
     }
 
@@ -32,6 +33,24 @@ class HereClient extends AbstractApiClient
         ];
 
         $result = $this->request(self::ROUTES_ENDPOINT_URL, $data);
+
+        if (null === $result) {
+            throw new HereRequestException('HERE API returned empty response');
+        }
+
+        return $result;
+    }
+
+    /**
+     * @throws HereRequestException
+     */
+    public function callGeocoder(string $query): ClientResponse
+    {
+        $data = [
+            'q' => $query,
+        ];
+
+        $result = $this->request(self::GEOCODE_ENDPOINT_URL, $data);
 
         if (null === $result) {
             throw new HereRequestException('HERE API returned empty response');

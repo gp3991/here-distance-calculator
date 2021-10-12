@@ -15,8 +15,31 @@ class Here
         $this->hereClient = new HereClient();
     }
 
-    public function geocodeAddress(string $address)
+    /**
+     * @throws HereRequestException
+     *
+     * @return Address[]
+     */
+    public function geocodeAddress(string $query): array
     {
+        $apiCall = $this->hereClient->callGeocoder($query);
+
+        if (200 !== $apiCall->getStatusCode()) {
+            throw HereRequestException::fromClientResponse($apiCall);
+        }
+
+        $items = $apiCall->getContent()['items'] ?? [];
+        $result = [];
+
+        foreach ($items as $item) {
+            $result[] = new Address(
+                $item['title'] ?? '',
+                $item['position']['lat'] ?? 0,
+                $item['position']['lng'] ?? 0,
+            );
+        }
+
+        return $result;
     }
 
     /**
