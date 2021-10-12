@@ -37,6 +37,8 @@ class Address implements DbModelInterface, ApiModelInterface
 
     public function updateFromArray(array $data): DbModelInterface
     {
+        // Prevent id field update
+        unset($data['id']);
         return $this->assignArrayData($data);
     }
 
