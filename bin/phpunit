@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker exec -it here-distance-calculator sh -c "php ./vendor/bin/phpunit --testdox tests"
