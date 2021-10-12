@@ -71,5 +71,10 @@ class App
             '/address/item',
             fn (JsonRequestInterface $request) => (new AddressController($this))->updateItemAction($request)
         );
+
+        $this->router->delete(
+            '/address/item',
+            fn (JsonRequestInterface $request) => (new AddressController($this))->removeItemAction($request)
+        );
     }
 }
