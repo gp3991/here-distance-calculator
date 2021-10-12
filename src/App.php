@@ -26,7 +26,7 @@ class App
 
     public function getDatabaseConnection(): PDOConnectionInterface
     {
-        return new SQLiteConnection(__DIR__.'/../'.SQLiteConfig::DB_FILE);
+        return new SQLiteConnection(__DIR__.'/../'.$_ENV['DB_FILE']);
     }
 
     private function init(): self
