@@ -18,7 +18,7 @@ class App
         return (new App())->init();
     }
 
-    public static function getDatabaseConnection(): PDOConnectionInterface
+    public function getDatabaseConnection(): PDOConnectionInterface
     {
         return new SQLiteConnection(__DIR__ . '/../' . SQLiteConfig::DB_FILE);
     }
@@ -35,24 +35,24 @@ class App
         
         ApiRouter::get(
             '/',
-            fn (JsonRequestInterface $request) => (new HomeController())->index()
+            fn (JsonRequestInterface $request) => (new HomeController($this))->index()
         );
 
         ApiRouter::get(
             '/404',
-            fn (JsonRequestInterface $request) => (new NotFoundController())->index()
+            fn (JsonRequestInterface $request) => (new NotFoundController($this))->index()
         );
 
         // Address related endpoints
         
         ApiRouter::get(
             '/address/list',
-            fn (JsonRequestInterface $request) => (new AddressController())->getCollectionAction()
+            fn (JsonRequestInterface $request) => (new AddressController($this))->getCollectionAction()
         );
 
         ApiRouter::get(
             '/address/item',
-            fn (JsonRequestInterface $request) => (new AddressController())->getItemAction($request)
+            fn (JsonRequestInterface $request) => (new AddressController($this))->getItemAction($request)
         );
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Gp3991\HereDistanceCalculator\Controller;
 
+use Gp3991\HereDistanceCalculator\App;
 use Gp3991\HereDistanceCalculator\Exception\BadRequestHttpException;
 use Gp3991\HereDistanceCalculator\Exception\HttpException;
 use Gp3991\HereDistanceCalculator\Exception\NotFoundHttpException;
@@ -14,11 +15,11 @@ class AddressController extends AbstractController
 {
     private AddressRepository $addressRepository;
 
-    public function __construct()
+    public function __construct(App $app)
     {
-        parent::__construct();
+        parent::__construct($app);
 
-        $this->addressRepository = new AddressRepository($this->dbConnection);
+        $this->addressRepository = new AddressRepository($this->getDbConnection());
     }
 
     public function getCollectionAction(): ResponseInterface

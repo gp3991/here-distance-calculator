@@ -8,9 +8,15 @@ use Gp3991\HereDistanceCalculator\Storage\PDOConnectionInterface;
 abstract class AbstractController
 {
     protected PDOConnectionInterface $dbConnection;
+    protected App $app;
     
-    public function __construct()
+    public function __construct(App $app)
     {
-        $this->dbConnection = App::getDatabaseConnection();
+        $this->app = $app;
+    }
+    
+    public function getDbConnection(): PDOConnectionInterface
+    {
+        return $this->app->getDatabaseConnection();
     }
 }
