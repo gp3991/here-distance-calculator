@@ -6,4 +6,5 @@
 /var/db.sqlite
 /vendor/
 .php-cs-fixer.cache
+.env
 ###< project ###
