@@ -6,24 +6,41 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class Address implements DbModelInterface, ApiModelInterface
 {
+    public const TABLE_NAME = 'address';
+
     public int $id;
-    public string $label;
-    public float $lat;
-    public float $lon;
+    public ?string $label = null;
+    public ?float $lat = null;
+    public ?float $lon = null;
+
+    private function assignArrayData(array $data): self
+    {
+        foreach ($data as $key => $value) {
+            if (!property_exists($this, $key)) {
+                continue;
+            }
+
+            $this->{$key} = match ($key) {
+                'id' => (int) $value,
+                'label' => $value,
+                'lat', 'lon' => (float) $value
+            };
+        }
+
+        return $this;
+    }
 
     public static function createFromArray(array $data): DbModelInterface
     {
-        $obj = new Address();
-
-        $obj->id = (int) $data['id'];
-        $obj->label = $data['label'];
-        $obj->lat = (float) $data['lat'];
-        $obj->lon = (float) $data['lon'];
-
-        return $obj;
+        return (new Address())->assignArrayData($data);
     }
 
-    #[ArrayShape(['id' => "int", 'label' => "string", 'lat' => "float", 'lon' => "float"])]
+    public function updateFromArray(array $data): DbModelInterface
+    {
+        return $this->assignArrayData($data);
+    }
+
+    #[ArrayShape(['id' => 'int', 'label' => 'string', 'lat' => 'float', 'lon' => 'float'])]
     public function toArray(): array
     {
         return [

@@ -7,8 +7,6 @@ use Gp3991\HereDistanceCalculator\Storage\PDOConnectionInterface;
 
 class AddressRepository implements RepositoryInterface
 {
-    const TABLE_NAME = 'address';
-
     public function __construct(
         public PDOConnectionInterface $connection
     ) {
@@ -20,14 +18,14 @@ class AddressRepository implements RepositoryInterface
             ->getConnection()
             ->prepare(
                 sprintf(
-                    "SELECT * FROM %s WHERE id = :id",
-                    self::TABLE_NAME
+                    'SELECT * FROM %s WHERE id = :id',
+                    Address::TABLE_NAME
                 )
             );
 
         $stmt->execute(['id' => $id]);
         $address = $stmt->fetch(\PDO::FETCH_ASSOC);
-        
+
         return $address ? Address::createFromArray($address) : null;
     }
 
@@ -38,14 +36,14 @@ class AddressRepository implements RepositoryInterface
             ->getConnection()
             ->prepare(
                 sprintf(
-                    "SELECT * FROM %s",
-                    self::TABLE_NAME
+                    'SELECT * FROM %s',
+                    Address::TABLE_NAME
                 )
             );
 
         $stmt->execute();
         $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        
+
         return array_map(
             fn ($item) => Address::createFromArray($item),
             $results

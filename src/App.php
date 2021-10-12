@@ -26,19 +26,20 @@ class App
 
     public function getDatabaseConnection(): PDOConnectionInterface
     {
-        return new SQLiteConnection(__DIR__ . '/../' . SQLiteConfig::DB_FILE);
+        return new SQLiteConnection(__DIR__.'/../'.SQLiteConfig::DB_FILE);
     }
-    
+
     private function init(): self
     {
         $this->registerRoutes();
+
         return $this;
     }
 
     private function registerRoutes()
     {
         // Other/dummy endpoints
-        
+
         $this->router->get(
             '/',
             fn (JsonRequestInterface $request) => (new HomeController($this))->index()
@@ -59,6 +60,16 @@ class App
         $this->router->get(
             '/address/item',
             fn (JsonRequestInterface $request) => (new AddressController($this))->getItemAction($request)
+        );
+
+        $this->router->post(
+            '/address/item',
+            fn (JsonRequestInterface $request) => (new AddressController($this))->createItemAction($request)
+        );
+
+        $this->router->patch(
+            '/address/item',
+            fn (JsonRequestInterface $request) => (new AddressController($this))->updateItemAction($request)
         );
     }
 }
