@@ -47,8 +47,13 @@ class App
         // Other/dummy endpoints
 
         $this->router->get(
+            '/swagger.json',
+            fn (JsonRequestInterface $request) => (new HomeController($this))->swaggerDocsAction()
+        );
+
+        $this->router->get(
             '/',
-            fn (JsonRequestInterface $request) => (new HomeController($this))->index()
+            fn (JsonRequestInterface $request) => (new HomeController($this))->indexAction()
         );
 
         $this->router->get(
