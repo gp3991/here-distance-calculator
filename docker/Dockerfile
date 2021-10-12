@@ -22,6 +22,9 @@ ENV PHP_IDE_CONFIG="serverName=127.0.0.1"
 # Use the default development configuration
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
+# Copy fix-perms script
+COPY fix-perms /usr/local/bin/fix-perms
+
 # Copy and set entrypoint script
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]

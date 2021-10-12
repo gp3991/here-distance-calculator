@@ -28,5 +28,3 @@ CREATE TABLE address
 
 $pdo->exec("INSERT INTO address (id, label, lat, lon) VALUES (1, 'Pawia 9, Kraków', 50.066305, 19.945075);");
 $pdo->exec("INSERT INTO address (id, label, lat, lon) VALUES (2, 'Cyfrowa 8, Szczecin', 53.45112, 14.53645);");
-
-chmod($dbFile, 0777);
