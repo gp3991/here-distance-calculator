@@ -12,6 +12,7 @@ class Validator
     {
         $this->validators = [
             new AddressValidator(),
+            new LocationValidator(),
         ];
     }
 
