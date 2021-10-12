@@ -4,6 +4,7 @@ namespace Gp3991\HereDistanceCalculator;
 
 use Gp3991\HereDistanceCalculator\Config\SQLiteConfig;
 use Gp3991\HereDistanceCalculator\Controller\AddressController;
+use Gp3991\HereDistanceCalculator\Controller\HereController;
 use Gp3991\HereDistanceCalculator\Controller\HomeController;
 use Gp3991\HereDistanceCalculator\Controller\NotFoundController;
 use Gp3991\HereDistanceCalculator\Http\ApiRouter;
@@ -75,6 +76,13 @@ class App
         $this->router->delete(
             '/address/item',
             fn (JsonRequestInterface $request) => (new AddressController($this))->removeItemAction($request)
+        );
+
+        // HERE API related endpoints
+
+        $this->router->get(
+            '/here/calculate-route',
+            fn (JsonRequestInterface $request) => (new HereController($this))->calculateRoute($request)
         );
     }
 }

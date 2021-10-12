@@ -49,7 +49,7 @@ class AddressController extends AbstractController
         $address = $this->addressRepository->find($id);
 
         if (!$address) {
-            throw new NotFoundHttpException(sprintf('Item id=%d not found', $id));
+            throw new NotFoundHttpException(sprintf('Address id=%d not found', $id));
         }
 
         return $address;

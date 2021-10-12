@@ -2,6 +2,7 @@
 
 namespace Gp3991\HereDistanceCalculator\Model;
 
+use Gp3991\HereDistanceCalculator\Here\Location;
 use JetBrains\PhpStorm\ArrayShape;
 
 class Address implements DbModelInterface, ApiModelInterface
@@ -39,6 +40,7 @@ class Address implements DbModelInterface, ApiModelInterface
     {
         // Prevent id field update
         unset($data['id']);
+
         return $this->assignArrayData($data);
     }
 
@@ -51,5 +53,10 @@ class Address implements DbModelInterface, ApiModelInterface
             'lat' => $this->lat,
             'lon' => $this->lon,
         ];
+    }
+
+    public function getLocation(): Location
+    {
+        return new Location($this->lat, $this->lon);
     }
 }

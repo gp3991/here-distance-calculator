@@ -1,0 +1,113 @@
+<?php
+
+namespace Gp3991\HereDistanceCalculator\Controller;
+
+use Assert\Assertion;
+use Assert\AssertionFailedException;
+use Gp3991\HereDistanceCalculator\App;
+use Gp3991\HereDistanceCalculator\Exception\BadRequestHttpException;
+use Gp3991\HereDistanceCalculator\Exception\HereRequestException;
+use Gp3991\HereDistanceCalculator\Exception\HereRouteNotFoundException;
+use Gp3991\HereDistanceCalculator\Exception\HttpException;
+use Gp3991\HereDistanceCalculator\Exception\NotFoundHttpException;
+use Gp3991\HereDistanceCalculator\Exception\ValidatorNotFoundException;
+use Gp3991\HereDistanceCalculator\Here\Here;
+use Gp3991\HereDistanceCalculator\Here\Location;
+use Gp3991\HereDistanceCalculator\Http\JsonRequestInterface;
+use Gp3991\HereDistanceCalculator\Http\JsonResponse;
+use Gp3991\HereDistanceCalculator\Http\RequestInterface;
+use Gp3991\HereDistanceCalculator\Http\ResponseInterface;
+use Gp3991\HereDistanceCalculator\Model\Address;
+use Gp3991\HereDistanceCalculator\Model\RouteDistance;
+use Gp3991\HereDistanceCalculator\Repository\AddressRepository;
+use Gp3991\HereDistanceCalculator\Validator\Validator;
+
+class HereController extends AbstractController
+{
+    public const MISSING_PARAMETER_MESSAGE = 'Missing %s parameter.';
+
+    private Here $here;
+    private AddressRepository $addressRepository;
+    private Validator $validator;
+
+    public function __construct(App $app)
+    {
+        parent::__construct($app);
+
+        $this->here = new Here();
+        $this->addressRepository = new AddressRepository($this->getDbConnection());
+        $this->validator = new Validator();
+    }
+
+    /**
+     * @throws BadRequestHttpException
+     * @throws NotFoundHttpException
+     */
+    private function getAddressFromQuery(RequestInterface $request): Address
+    {
+        $id = (int) ($request->getQuery()['address_id'] ?? null);
+
+        if (!$id) {
+            throw new BadRequestHttpException('You must provide an address_id parameter');
+        }
+
+        $address = $this->addressRepository->find($id);
+
+        if (!$address) {
+            throw new NotFoundHttpException(sprintf('Address id=%d not found', $id));
+        }
+
+        return $address;
+    }
+
+    /**
+     * @throws HttpException
+     * @throws AssertionFailedException
+     * @throws ValidatorNotFoundException
+     */
+    public function calculateRoute(JsonRequestInterface $request): ResponseInterface
+    {
+        $address = $this->getAddressFromQuery($request);
+        $query = $request->getQuery();
+
+        Assertion::keyExists(
+            $query,
+            'dest_latitude',
+            sprintf(
+                self::MISSING_PARAMETER_MESSAGE,
+                'dest_latitude'
+            )
+        );
+
+        Assertion::keyExists(
+            $query,
+            'dest_longitude',
+            sprintf(
+                self::MISSING_PARAMETER_MESSAGE,
+                'dest_longitude'
+            )
+        );
+
+        $destination = new Location(
+            (float) $query['dest_latitude'],
+            (float) $query['dest_longitude']
+        );
+
+        $this->validator->validate($destination);
+
+        try {
+            $length = $this->here->measureDistance(
+                $address->getLocation(),
+                $destination
+            );
+        } catch (HereRouteNotFoundException $e) {
+            throw new NotFoundHttpException($e->getMessage());
+        } catch (HereRequestException $e) {
+            throw new BadRequestHttpException('Here API request error', data: ['here_message' => $e->getMessage()]);
+        }
+
+        return new JsonResponse(
+            (new RouteDistance($length))->toArray()
+        );
+    }
+}
