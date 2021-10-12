@@ -67,7 +67,7 @@
         "summary": "Add address.",
         "operationId": "createItemAction",
         "requestBody": {
-          "description": "Pet object that needs to be added to the store",
+          "description": "Address data",
           "required": true,
           "content": {
             "application/json": {
@@ -112,8 +112,19 @@
         ],
         "summary": "Update address.",
         "operationId": "updateItemAction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Address ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
         "requestBody": {
-          "description": "Pet object that needs to be added to the store",
+          "description": "Address data",
           "required": true,
           "content": {
             "application/json": {
@@ -150,11 +161,14 @@
         ],
         "responses": {
           "200": {
-            "description": "MapLocation model on success",
+            "description": "MapLocation list on success.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MapLocation"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MapLocation"
+                  }
                 }
               }
             }
