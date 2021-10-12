@@ -14,10 +14,4 @@ class HomeController extends AbstractController
             headers: [ResponseInterface::HTML_RESPONSE_HEADER]
         );
     }
-
-    public function swaggerDocsAction(): ResponseInterface
-    {
-        $openapi = \OpenApi\Generator::scan([__DIR__.'/../../src']);
-        return new Response($openapi->toJson(), headers: [ResponseInterface::JSON_RESPONSE_HEADER]);
-    }
 }

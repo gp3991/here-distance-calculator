@@ -27,7 +27,7 @@ class Validator
             throw new ValidatorNotFoundException(get_class($object));
         }
 
-        $validator?->validate($object);
+        $validator->validate($object);
     }
 
     private function getValidator(object $object): ?ValidatorInterface

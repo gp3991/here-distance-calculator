@@ -3,6 +3,7 @@
 namespace Gp3991\HereDistanceCalculator\Validator;
 
 use Assert\Assertion;
+use Assert\AssertionFailedException;
 use Gp3991\HereDistanceCalculator\Here\Location;
 
 class LocationValidator implements ValidatorInterface
@@ -11,7 +12,7 @@ class LocationValidator implements ValidatorInterface
     public const WRONG_LONGITUDE_MESSAGE = 'Given longitude is not a valid coordinate.';
 
     /**
-     * @throws \Assert\AssertionFailedException
+     * @throws AssertionFailedException
      */
     public function validate(object $object)
     {

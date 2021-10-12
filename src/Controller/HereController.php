@@ -23,7 +23,6 @@ use Gp3991\HereDistanceCalculator\Model\MapLocation;
 use Gp3991\HereDistanceCalculator\Model\RouteDistance;
 use Gp3991\HereDistanceCalculator\Repository\AddressRepository;
 use Gp3991\HereDistanceCalculator\Validator\Validator;
-use OpenApi\Annotations as OA;
 
 class HereController extends AbstractController
 {
@@ -64,27 +63,6 @@ class HereController extends AbstractController
     }
 
     /**
-     * @OA\Get(
-     *     path="/here/geocode",
-     *     summary="Find an address based on a given query.",
-     *     tags={"Here"},
-     *     operationId="geocodeAddressAction",
-     *     @OA\Parameter(
-     *         description="Search query",
-     *         in="query",
-     *         name="q",
-     *         required=true,
-     *         @OA\Schema(
-     *           type="string"
-     *         )
-     *     ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="MapLocation model on success",
-     *          @OA\JsonContent(ref="#/components/schemas/MapLocation"),
-     *      )
-     * )
-     *
      * @throws HttpException
      * @throws AssertionFailedException
      */
@@ -126,45 +104,6 @@ class HereController extends AbstractController
     }
 
     /**
-     * @OA\Get(
-     *      path="/here/calculate-route",
-     *      summary="Find the distance between Address and coordinates.",
-     *      tags={"Here"},
-     *      operationId="calculateRouteAction",
-     *      @OA\Parameter(
-     *          description="ID of Address",
-     *          in="query",
-     *          name="address_id",
-     *          required=true,
-     *          @OA\Schema(
-     *            type="integer"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          description="Destination latitude",
-     *          in="query",
-     *          name="dest_latitude",
-     *          required=true,
-     *          @OA\Schema(
-     *            type="number"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          description="Destination longitude",
-     *          in="query",
-     *          name="dest_longitude",
-     *          required=true,
-     *          @OA\Schema(
-     *            type="number"
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="RouteDistance model on success",
-     *          @OA\JsonContent(ref="#/components/schemas/RouteDistance"),
-     *      )
-     * )
-     *
      * @throws HttpException
      * @throws AssertionFailedException
      * @throws ValidatorNotFoundException

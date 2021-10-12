@@ -28,5 +28,7 @@ class HereRequestException extends \Exception
                 $response->getStatusCode()
             );
         }
+
+        return new HereRequestException();
     }
 }

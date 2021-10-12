@@ -1,0 +1,299 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "here-distance-calculator",
+    "version": "1"
+  },
+  "paths": {
+    "/address/collection": {
+      "get": {
+        "tags": [
+          "Address"
+        ],
+        "summary": "Get all addresses.",
+        "operationId": "getCollectionAction",
+        "responses": {
+          "200": {
+            "description": "Address collection on success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Address"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/address/item": {
+      "get": {
+        "tags": [
+          "Address"
+        ],
+        "summary": "Get single address.",
+        "operationId": "getItemAction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Address ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Address collection on success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Address"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Address"
+        ],
+        "summary": "Add address.",
+        "operationId": "createItemAction",
+        "requestBody": {
+          "description": "Pet object that needs to be added to the store",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Address_write"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Address created."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Address"
+        ],
+        "summary": "Remove address.",
+        "operationId": "removeItemAction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Address ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Address has been removed"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Address"
+        ],
+        "summary": "Update address.",
+        "operationId": "updateItemAction",
+        "requestBody": {
+          "description": "Pet object that needs to be added to the store",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Address_write"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Address created."
+          }
+        }
+      }
+    },
+    "/here/geocode": {
+      "get": {
+        "tags": [
+          "Here"
+        ],
+        "summary": "Find an address based on a given query.",
+        "operationId": "geocodeAddressAction",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Search query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "MapLocation model on success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MapLocation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/here/calculate-route": {
+      "get": {
+        "tags": [
+          "Here"
+        ],
+        "summary": "Find the distance between Address and coordinates.",
+        "operationId": "calculateRouteAction",
+        "parameters": [
+          {
+            "name": "address_id",
+            "in": "query",
+            "description": "ID of Address",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "dest_latitude",
+            "in": "query",
+            "description": "Destination latitude",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "dest_longitude",
+            "in": "query",
+            "description": "Destination longitude",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "RouteDistance model on success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RouteDistance"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Address": {
+        "description": "Address model",
+        "properties": {
+          "id": {
+            "description": "ID",
+            "format": "int",
+            "example": "1"
+          },
+          "label": {
+            "description": "Location label",
+            "format": "string",
+            "example": "606-3727 Ullamcorper. Street Roseville NH 11523"
+          },
+          "lat": {
+            "description": "Latitude",
+            "format": "number",
+            "example": "52.44329602318273"
+          },
+          "lon": {
+            "description": "Longitude",
+            "format": "number",
+            "example": "16.86055499415471"
+          }
+        },
+        "type": "object"
+      },
+      "Address_write": {
+        "description": "Address model",
+        "properties": {
+          "label": {
+            "description": "Location label",
+            "format": "string",
+            "example": "606-3727 Ullamcorper. Street Roseville NH 11523"
+          },
+          "lat": {
+            "description": "Latitude",
+            "format": "number",
+            "example": "52.44329602318273"
+          },
+          "lon": {
+            "description": "Longitude",
+            "format": "number",
+            "example": "16.86055499415471"
+          }
+        },
+        "type": "object"
+      },
+      "MapLocation": {
+        "description": "Map location",
+        "properties": {
+          "label": {
+            "description": "Location label",
+            "format": "string",
+            "example": "606-3727 Ullamcorper. Street Roseville NH 11523"
+          },
+          "lat": {
+            "description": "lat",
+            "format": "number",
+            "example": "52.44329602318273"
+          },
+          "lon": {
+            "description": "lon",
+            "format": "number",
+            "example": "16.86055499415471"
+          }
+        },
+        "type": "object"
+      },
+      "RouteDistance": {
+        "description": "Route distance",
+        "properties": {
+          "distance": {
+            "description": "Distance between two points in meters",
+            "format": "int64",
+            "example": "1234"
+          }
+        },
+        "type": "object"
+      }
+    }
+  }
+}

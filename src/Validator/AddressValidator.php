@@ -3,12 +3,13 @@
 namespace Gp3991\HereDistanceCalculator\Validator;
 
 use Assert\Assertion;
+use Assert\AssertionFailedException;
 use Gp3991\HereDistanceCalculator\Model\Address;
 
 class AddressValidator implements ValidatorInterface
 {
     /**
-     * @throws \Assert\AssertionFailedException
+     * @throws AssertionFailedException
      */
     public function validate(object $object)
     {

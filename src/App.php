@@ -11,13 +11,7 @@ use Gp3991\HereDistanceCalculator\Http\JsonRequestInterface;
 use Gp3991\HereDistanceCalculator\Http\RouterInterface;
 use Gp3991\HereDistanceCalculator\Storage\PDOConnectionInterface;
 use Gp3991\HereDistanceCalculator\Storage\SQLite\SQLiteConnection;
-use OpenApi\Annotations\Info;
-use OpenApi\Annotations\OpenApi;
 
-/**
- * @OpenApi()
- * @Info(title="here-distance-calculator", version="1")
- */
 class App
 {
     public function __construct(
@@ -47,11 +41,6 @@ class App
         // Other/dummy endpoints
 
         $this->router->get(
-            '/swagger.json',
-            fn (JsonRequestInterface $request) => (new HomeController($this))->swaggerDocsAction()
-        );
-
-        $this->router->get(
             '/',
             fn (JsonRequestInterface $request) => (new HomeController($this))->indexAction()
         );
@@ -64,7 +53,7 @@ class App
         // Address related endpoints
 
         $this->router->get(
-            '/address/list',
+            '/address/collection',
             fn (JsonRequestInterface $request) => (new AddressController($this))->getCollectionAction()
         );
 
