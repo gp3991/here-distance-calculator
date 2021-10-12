@@ -11,7 +11,7 @@ class Request implements RequestInterface
 
     public function getBody(): string
     {
-        return stream_get_contents(STDIN);
+        return file_get_contents('php://input');
     }
 
     public function getQuery(): array
