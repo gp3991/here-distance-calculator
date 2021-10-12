@@ -11,6 +11,7 @@ use Gp3991\HereDistanceCalculator\Exception\HereRouteNotFoundException;
 use Gp3991\HereDistanceCalculator\Exception\HttpException;
 use Gp3991\HereDistanceCalculator\Exception\NotFoundHttpException;
 use Gp3991\HereDistanceCalculator\Exception\ValidatorNotFoundException;
+use Gp3991\HereDistanceCalculator\Here\Address as HereAddress;
 use Gp3991\HereDistanceCalculator\Here\Here;
 use Gp3991\HereDistanceCalculator\Here\Location;
 use Gp3991\HereDistanceCalculator\Http\JsonRequestInterface;
@@ -18,6 +19,7 @@ use Gp3991\HereDistanceCalculator\Http\JsonResponse;
 use Gp3991\HereDistanceCalculator\Http\RequestInterface;
 use Gp3991\HereDistanceCalculator\Http\ResponseInterface;
 use Gp3991\HereDistanceCalculator\Model\Address;
+use Gp3991\HereDistanceCalculator\Model\MapLocation;
 use Gp3991\HereDistanceCalculator\Model\RouteDistance;
 use Gp3991\HereDistanceCalculator\Repository\AddressRepository;
 use Gp3991\HereDistanceCalculator\Validator\Validator;
@@ -63,9 +65,50 @@ class HereController extends AbstractController
     /**
      * @throws HttpException
      * @throws AssertionFailedException
+     */
+    public function geocodeAddressAction(JsonRequestInterface $request): ResponseInterface
+    {
+        $query = $request->getQuery();
+
+        Assertion::keyExists(
+            $query,
+            'q',
+            sprintf(
+                self::MISSING_PARAMETER_MESSAGE,
+                'q'
+            )
+        );
+
+        Assertion::minLength(
+            $query['q'],
+            3,
+            'Minimum length for `q` parameter is 3.'
+        );
+
+        try {
+            $result = $this->here->geocodeAddress($query['q']);
+        } catch (HereRequestException $e) {
+            throw new BadRequestHttpException('Here API request error', data: ['here_message' => $e->getMessage()]);
+        }
+
+        $result = array_map(
+            fn (HereAddress $address) => (new MapLocation(
+                $address->label,
+                $address->location->latitude,
+                $address->location->longitude
+            )),
+            $result
+        );
+
+        return new JsonResponse($result);
+    }
+
+    /**
+     * @throws HttpException
+     * @throws AssertionFailedException
      * @throws ValidatorNotFoundException
      */
-    public function calculateRoute(JsonRequestInterface $request): ResponseInterface
+    public function calculateRouteAction(JsonRequestInterface $request): ResponseInterface
     {
         $address = $this->getAddressFromQuery($request);
         $query = $request->getQuery();

@@ -2,7 +2,6 @@
 
 namespace Gp3991\HereDistanceCalculator;
 
-use Gp3991\HereDistanceCalculator\Config\SQLiteConfig;
 use Gp3991\HereDistanceCalculator\Controller\AddressController;
 use Gp3991\HereDistanceCalculator\Controller\HereController;
 use Gp3991\HereDistanceCalculator\Controller\HomeController;
@@ -82,7 +81,12 @@ class App
 
         $this->router->get(
             '/here/calculate-route',
-            fn (JsonRequestInterface $request) => (new HereController($this))->calculateRoute($request)
+            fn (JsonRequestInterface $request) => (new HereController($this))->calculateRouteAction($request)
+        );
+
+        $this->router->get(
+            '/here/geocode',
+            fn (JsonRequestInterface $request) => (new HereController($this))->geocodeAddressAction($request)
         );
     }
 }
