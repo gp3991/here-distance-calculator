@@ -9,4 +9,5 @@ $dotenv->safeLoad();
 
 $dotenv->required(['DB_FILE', 'HERE_API_KEY'])->notEmpty();
 
-App::create();
+$app = App::create();
+$app->handleRequest();
