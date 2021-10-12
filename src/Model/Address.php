@@ -6,10 +6,10 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class Address implements DbModelInterface, ApiModelInterface
 {
-    private int $id;
-    private string $label;
-    private float $lat;
-    private float $lon;
+    public int $id;
+    public string $label;
+    public float $lat;
+    public float $lon;
 
     public static function createFromArray(array $data): DbModelInterface
     {
@@ -32,25 +32,5 @@ class Address implements DbModelInterface, ApiModelInterface
             'lat' => $this->lat,
             'lon' => $this->lon,
         ];
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-    
-    public function getLabel(): string
-    {
-        return $this->label;
-    }
-
-    public function getLat(): float
-    {
-        return $this->lat;
-    }
-    
-    public function getLon(): float
-    {
-        return $this->lon;
     }
 }
