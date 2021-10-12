@@ -20,7 +20,7 @@ HERE_API_KEY=apikey
 
 ## Running project
 ```shell
-cp .env-example .env
+cp .env.example .env
 docker-compose up --build -d
 bin/init-database # or src/Command/init-db.php in docker container 
 ```
