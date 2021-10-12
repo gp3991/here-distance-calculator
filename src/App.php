@@ -8,14 +8,20 @@ use Gp3991\HereDistanceCalculator\Controller\HomeController;
 use Gp3991\HereDistanceCalculator\Controller\NotFoundController;
 use Gp3991\HereDistanceCalculator\Http\ApiRouter;
 use Gp3991\HereDistanceCalculator\Http\JsonRequestInterface;
+use Gp3991\HereDistanceCalculator\Http\RouterInterface;
 use Gp3991\HereDistanceCalculator\Storage\PDOConnectionInterface;
 use Gp3991\HereDistanceCalculator\Storage\SQLite\SQLiteConnection;
 
 class App
 {
+    public function __construct(
+        private RouterInterface $router
+    ) {
+    }
+
     public static function create(): App
     {
-        return (new App())->init();
+        return (new App(new ApiRouter()))->init();
     }
 
     public function getDatabaseConnection(): PDOConnectionInterface
@@ -33,24 +39,24 @@ class App
     {
         // Other/dummy endpoints
         
-        ApiRouter::get(
+        $this->router->get(
             '/',
             fn (JsonRequestInterface $request) => (new HomeController($this))->index()
         );
 
-        ApiRouter::get(
+        $this->router->get(
             '/404',
             fn (JsonRequestInterface $request) => (new NotFoundController($this))->index()
         );
 
         // Address related endpoints
-        
-        ApiRouter::get(
+
+        $this->router->get(
             '/address/list',
             fn (JsonRequestInterface $request) => (new AddressController($this))->getCollectionAction()
         );
 
-        ApiRouter::get(
+        $this->router->get(
             '/address/item',
             fn (JsonRequestInterface $request) => (new AddressController($this))->getItemAction($request)
         );

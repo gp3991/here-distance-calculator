@@ -6,25 +6,25 @@ use Gp3991\HereDistanceCalculator\Exception\HttpExceptionInterface;
 
 class ApiRouter implements RouterInterface
 {
-    public static function get(string $route, callable $callback)
+    public function get(string $route, callable $callback)
     {
         if ('GET' !== $_SERVER['REQUEST_METHOD']) {
             return;
         }
 
-        self::request($route, $callback);
+        $this->request($route, $callback);
     }
 
-    public static function post(string $route, callable $callback)
+    public function post(string $route, callable $callback)
     {
         if ('POST' !== $_SERVER['REQUEST_METHOD']) {
             return;
         }
 
-        self::request($route, $callback);
+        $this->request($route, $callback);
     }
 
-    private static function request(string $route, callable $callback)
+    private function request(string $route, callable $callback)
     {
         if (strtok($_SERVER['REQUEST_URI'], '?') === $route) {
             
@@ -44,7 +44,7 @@ class ApiRouter implements RouterInterface
                 throw new \Exception('Controller result must implement ResponseInterface.');
             }
 
-            self::sendResponse(
+            $this->sendResponse(
                 $response->getStatusCode(),
                 $response->getHeaders(),
                 $response->getContent()
@@ -52,7 +52,7 @@ class ApiRouter implements RouterInterface
         }
     }
     
-    private static function sendResponse(int $statusCode, array $headers, string $content)
+    private function sendResponse(int $statusCode, array $headers, string $content)
     {
         // Send response code
         http_response_code($statusCode);
