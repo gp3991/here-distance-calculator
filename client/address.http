@@ -1,3 +1,21 @@
+POST {{host}}/address/item
+Content-Type: application/json
+
+{
+  "label": "Test 123",
+  "lat": 23.231313,
+  "lon": 52.13123
+}
+
+###
+PATCH {{host}}/address/item?id=3
+Content-Type: application/json
+
+{
+  "lat": 23.2212
+}
+
+###
 GET {{host}}/address/list
 Accept: application/json
 

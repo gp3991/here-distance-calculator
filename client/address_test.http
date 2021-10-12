@@ -1,15 +1,34 @@
 GET {{host}}/address/list
 Accept: application/json
 
-> {%
-if(response.body[0]) {
-client.global.set("address_id", response.body[0]['id']);
+###
+POST {{host}}/address/item
+Content-Type: application/json
+
+{
+  "label": "Test 123",
+  "lat": 23.231313,
+  "lon": 52.13123
 }
+
+> {%
+client.global.set("address_id", response.body['id']);
 %}
 
+###
+PATCH {{host}}/address/item?id={{address_id}}
+Content-Type: application/json
+
+{
+  "lat": 23.2212
+}
 
 ###
 GET {{host}}/address/item?id={{address_id}}
+Accept: application/json
+
+###
+DELETE {{host}}/address/item?id={{address_id}}
 Accept: application/json
 
 ###
