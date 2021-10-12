@@ -14,6 +14,7 @@
         }
     ],
     "require": {
-      "ext-pdo": "*"
+      "ext-pdo": "*",
+        "beberlei/assert": "^3.3"
     }
 }
