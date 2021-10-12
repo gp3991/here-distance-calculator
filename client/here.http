@@ -2,3 +2,7 @@ GET {{host}}/here/calculate-route?address_id=2&dest_latitude=50.066305&dest_long
 Accept: application/json
 
 ###
+GET {{host}}/here/geocode?q=Sosnowa 18, Szałe
+Accept: application/json
+
+###
