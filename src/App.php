@@ -11,7 +11,13 @@ use Gp3991\HereDistanceCalculator\Http\JsonRequestInterface;
 use Gp3991\HereDistanceCalculator\Http\RouterInterface;
 use Gp3991\HereDistanceCalculator\Storage\PDOConnectionInterface;
 use Gp3991\HereDistanceCalculator\Storage\SQLite\SQLiteConnection;
+use OpenApi\Annotations\Info;
+use OpenApi\Annotations\OpenApi;
 
+/**
+ * @OpenApi()
+ * @Info(title="here-distance-calculator", version="1")
+ */
 class App
 {
     public function __construct(
