@@ -12,7 +12,7 @@ class Here
 
     public function __construct()
     {
-        $this->hereClient = new HereClient();
+        $this->hereClient = new HereClient($_ENV['HERE_API_KEY']);
     }
 
     /**

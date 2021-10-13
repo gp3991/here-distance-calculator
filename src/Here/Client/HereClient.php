@@ -9,9 +9,14 @@ class HereClient extends AbstractApiClient
     public const ROUTES_ENDPOINT_URL = 'https://router.hereapi.com/v8/routes';
     public const GEOCODE_ENDPOINT_URL = 'https://autosuggest.search.hereapi.com/v1/geocode';
 
+    public function __construct(
+        private string $apiKey
+    ) {
+    }
+
     public function request(string $url, array $query = []): ?ClientResponse
     {
-        $query['apiKey'] = $_ENV['HERE_API_KEY'];
+        $query['apiKey'] = $this->apiKey;
 
         return parent::request($url, $query);
     }
