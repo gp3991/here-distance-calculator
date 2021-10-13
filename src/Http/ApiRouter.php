@@ -8,6 +8,9 @@ use Gp3991\HereDistanceCalculator\Exception\HttpExceptionInterface;
 
 class ApiRouter extends AbstractRouter
 {
+    /**
+     * @throws \Exception
+     */
     protected function request(string $route, callable $callback)
     {
         if (strtok($_SERVER['REQUEST_URI'], '?') === $route) {

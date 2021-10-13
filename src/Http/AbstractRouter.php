@@ -4,6 +4,9 @@ namespace Gp3991\HereDistanceCalculator\Http;
 
 abstract class AbstractRouter implements RouterInterface
 {
+    /**
+     * @throws \Exception
+     */
     public function get(string $route, callable $callback)
     {
         if (!$this->checkMethod('GET')) {
@@ -13,6 +16,9 @@ abstract class AbstractRouter implements RouterInterface
         $this->request($route, $callback);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function post(string $route, callable $callback)
     {
         if (!$this->checkMethod('POST')) {
@@ -22,6 +28,9 @@ abstract class AbstractRouter implements RouterInterface
         $this->request($route, $callback);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function patch(string $route, callable $callback)
     {
         if (!$this->checkMethod('PATCH')) {
@@ -31,6 +40,9 @@ abstract class AbstractRouter implements RouterInterface
         $this->request($route, $callback);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function delete(string $route, callable $callback)
     {
         if (!$this->checkMethod('DELETE')) {
@@ -45,6 +57,9 @@ abstract class AbstractRouter implements RouterInterface
         return $method === ($_SERVER['REQUEST_METHOD'] ?? null);
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function request(string $route, callable $callback)
     {
         if (strtok($_SERVER['REQUEST_URI'], '?') === $route) {
