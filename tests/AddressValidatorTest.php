@@ -18,12 +18,12 @@ class AddressValidatorTest extends TestCase
 
     public function testCanValidateAddressObject(): void
     {
-        $validLocation = Address::createFromArray([
+        $validAddress = Address::createFromArray([
             'label' => 'Valid address',
             'lat' => 52.44236284976271,
             'lon' => 16.886658089121685
         ]);
-        $this->validator->validate($validLocation);
+        $this->validator->validate($validAddress);
         $this->addToAssertionCount(1);
 
         $invalidAddress = new Address();
