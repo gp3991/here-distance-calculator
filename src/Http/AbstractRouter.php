@@ -42,7 +42,7 @@ abstract class AbstractRouter implements RouterInterface
 
     private function checkMethod(string $method): bool
     {
-        return $method === $_SERVER['REQUEST_METHOD'];
+        return $method === ($_SERVER['REQUEST_METHOD'] ?? null);
     }
 
     protected function request(string $route, callable $callback)
