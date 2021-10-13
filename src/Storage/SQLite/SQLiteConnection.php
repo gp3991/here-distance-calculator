@@ -9,13 +9,13 @@ class SQLiteConnection implements PDOConnectionInterface
     private ?\PDO $pdo = null;
 
     public function __construct(
-        private string $dbFile
+        private string $dsn
     ) {
     }
 
     private function connect()
     {
-        $this->pdo = new \PDO('sqlite:'.$this->dbFile);
+        $this->pdo = new \PDO($this->dsn);
     }
 
     public function getConnection(): \PDO
