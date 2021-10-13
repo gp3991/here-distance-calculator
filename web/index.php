@@ -13,7 +13,12 @@ $dotenv->required(['DB_FILE', 'HERE_API_KEY'])->notEmpty();
 
 $app = new App(
     new ApiRouter(),
-    new SQLiteConnection('sqlite:' . __DIR__.'/../'.$_ENV['DB_FILE'])
+    new SQLiteConnection(
+        sprintf(
+            'sqlite:%s',
+            __DIR__.'/../'.$_ENV['DB_FILE']
+        )
+    )
 );
 
 $app->handleRequest();
