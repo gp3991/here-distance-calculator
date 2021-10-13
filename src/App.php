@@ -5,29 +5,23 @@ namespace Gp3991\HereDistanceCalculator;
 use Gp3991\HereDistanceCalculator\Controller\AddressController;
 use Gp3991\HereDistanceCalculator\Controller\HereController;
 use Gp3991\HereDistanceCalculator\Controller\HomeController;
-use Gp3991\HereDistanceCalculator\Http\ApiRouter;
 use Gp3991\HereDistanceCalculator\Http\JsonRequestInterface;
 use Gp3991\HereDistanceCalculator\Http\RouterInterface;
 use Gp3991\HereDistanceCalculator\Storage\PDOConnectionInterface;
-use Gp3991\HereDistanceCalculator\Storage\SQLite\SQLiteConnection;
 
 class App
 {
     public function __construct(
-        private RouterInterface $router
+        private RouterInterface $router,
+        private PDOConnectionInterface $dbConnection
     ) {
-    }
-
-    public static function create(): App
-    {
-        return (new App(new ApiRouter()));
     }
 
     public function getDatabaseConnection(): PDOConnectionInterface
     {
-        return new SQLiteConnection(__DIR__.'/../'.$_ENV['DB_FILE']);
+        return $this->dbConnection;
     }
-    
+
     public function handleRequest()
     {
         $this->registerRoutes();
@@ -40,7 +34,7 @@ class App
             '/',
             fn (JsonRequestInterface $request) => (new HomeController($this))->indexAction()
         );
-        
+
         // Address related endpoints
 
         $this->router->get(
@@ -80,7 +74,7 @@ class App
             fn (JsonRequestInterface $request) => (new HereController($this))->geocodeAddressAction($request)
         );
     }
-    
+
     private function notFound()
     {
         http_response_code(404);
