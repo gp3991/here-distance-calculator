@@ -25,6 +25,11 @@ docker-compose up --build -d
 bin/init-database # or src/Command/init-db.php in docker container 
 ```
 
+### PHPUnit
+
+    bin/phpunit
+
+
 ### PHP Coding Standards Fixer
 
 Please use `bin/php-cs-fixer` command or IDE inspection tools to keep up with `@Symfony` rules.
